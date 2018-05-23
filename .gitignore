@@ -43,4 +43,4 @@
 *.out
 *.app
 
-!venv
+!venv/*
