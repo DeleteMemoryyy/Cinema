@@ -1,5 +1,4 @@
 {% load static %}
-<!doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -35,17 +34,17 @@
 <div class="bloc bgc-black d-bloc" id="bloc-0">
 	<div class="container fill-bloc-top-edge">
 		<nav class="navbar row">
-			<!--<div class="navbar-header">-->
-				<!--<a class="navbar-brand" href="{% url 'index' %}"><img src="{% static '../static/img/logo.png' %}" alt="logo" class="lazyload" />Thought<span style="bold">Works</span></a>-->
-				<!--<button id="nav-toggle" type="button" class="ui-navbar-toggle navbar-toggle menu-icon-rounded-bars" data-toggle="collapse" data-target=".navbar-1">-->
-					<!--<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>-->
-				<!--</button>-->
-			<!--</div>-->
+			<div class="navbar-header">
+				<a class="navbar-brand" href="{% url 'index' %}"><img src="{% static '../static/img/logo.png' %}" alt="logo" class="lazyload" /><span style=:"bold">Cinema</span></a>
+				<button id="nav-toggle" type="button" class="ui-navbar-toggle navbar-toggle menu-icon-rounded-bars" data-toggle="collapse" data-target=".navbar-1">
+					<span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+				</button>
+			</div>
 			<div class="collapse navbar-collapse navbar-1 special-dropdown-nav">
 			    <form action="{% url 'movie_search_form' %}" method="post" class="navbar-form pull-right" role="search">
                     {% csrf_token %}
                     <input type="text" name="q" class="form-control" placeholder="Search">
-                    <button type="submit" name="submit" class="btn btn-default">搜索</button>
+                    <button type="submit" name="submit" class="btn btn-info">搜索</button>
                 </form>
             </div>
 		</nav>
@@ -142,7 +141,7 @@
 		</div>
 
         <div class="row">
-            <h3 class="detail-page-title"><span class="label label-default">剧情简介</span></h3>
+            <h3 class="detail-page-title"><span class="label label-primary">剧情简介</span></h3>
             <div class="col-sm-12 col-xs-12 reviews">
                 <p>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -153,7 +152,7 @@
 
         <!--豆瓣影评 Top5-->
         <div class="row">
-            <h3 class="detail-page-title"><span class="label label-default">豆瓣影评 Top5</span></h3>
+            <h3 class="detail-page-title"><span class="label label-primary">豆瓣影评 Top5</span></h3>
             {% for i in other_info.reviews %}
             <div class="col-sm-8 reviews">
                 <div class="review-item">
@@ -161,7 +160,7 @@
                         <img width="28" height="28" src="{{i.author.avatar}}" style="border：#337ab7;border-style：double" >
                         <span>&nbsp;&nbsp;
                             <a href="{{i.alt}}/">
-                                <span class="label label-primary">
+                                <span class="label label-info">
                                     {{i.title}}
                                 </span>
                             </a>
@@ -178,11 +177,11 @@
         <!--豆瓣影评 Top5 END-->
 
         <div class="row">
-            <h3 class="detail-page-title"><span class="label label-default">相似电影推荐</span></h3>
+            <h3 class="detail-page-title"><span class="label label-primary">相似电影推荐</span></h3>
             {% for rec in recommend_list %}
             <div class="col-sm-2 col-xs-4 text-center">
                 <a href="{% url 'movie_detail' rec.id %}" data-gallery-id="gallery-1">
-                    <img src="{{rec.image}}" alt="照片无法显示" class="img-responsive lazyload movie-img" />
+                    <img src="{{rec.image}}" alt="图片无法显示" class="img-responsive lazyload movie-img" />
                     <p class="text-center">
                         <span style="color:#444">
                             {%if rec.title|length >= 8 %}
@@ -194,7 +193,7 @@
                     </p>
                 </a>
                 <p class="text-center movie-rating">
-                    <span class="label label-primary">评分：{{rec.rating}}</span>
+                    <span class="label label-info">评分：{{rec.rating}}</span>
                 </p>
             </div>
             {% endfor %}
@@ -216,7 +215,7 @@
 					<!--<span>CopyRight © Tws-Beijing 2018, All Rights Reserved.</span>-->
                     <!--<span>-->
                         <!--<a target="_blank" href="http://tws-beijing.ga/">-->
-                        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-primary">关于我们</span>-->
+                        <!--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-info">关于我们</span>-->
                         <!--</a>-->
                     <!--</span>-->
 				<!--</p>-->
