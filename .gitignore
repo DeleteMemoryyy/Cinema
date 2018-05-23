@@ -42,5 +42,3 @@
 *.exe
 *.out
 *.app
-
-!bin/
