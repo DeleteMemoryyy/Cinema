@@ -287,7 +287,7 @@ def movie_search_by_year(request, year):
                 start_id, title, image = mv[0], mv[2], mv[5];
                 rating = mv[7]
                 tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
-                            rating, 'directors', 'casts', 'intro', '1', '1')
+                            rating, 'directors', 'casts', 'intro', '1')
                 movies_list.append(tmp)
 
         # datas = Movie.objects.all()
