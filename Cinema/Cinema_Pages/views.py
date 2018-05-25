@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 from django.shortcuts import render, redirect
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
@@ -31,20 +33,20 @@ def movie_display(request):
 def movie_detail(request, id):
     try:
         movie = Movie.objects.get(id=id)
-        if request.method == 'GET':
-            conn = MySQLdb.connect(
-                host='localhost',
-                port=3306,
-                user='root',
-                passwd='xt032341',
-                db='cinema'
-            )
-            cursor = conn.cursor()
-            sqlstr = 'SELECT * FROM Cinema_Pages_movie WHERE id = {0}'.format(id)
-            print(sqlstr)
-            cursor.execute(sqlstr)
-            values = cursor.fetchall()
-            print(values)
+        # if request.method == 'GET':
+        #     conn = MySQLdb.connect(
+        #         host='localhost',
+        #         port=3306,
+        #         user='root',
+        #         passwd='xt032341',
+        #         db='cinema'
+        #     )
+        #     cursor = conn.cursor()
+        #     sqlstr = 'SELECT * FROM Cinema_Pages_movie WHERE id = {0}'.format(id)
+        #     print(sqlstr)
+        #     cursor.execute(sqlstr)
+        #     values = cursor.fetchall()
+        #     print(values)
         datas = Movie.objects.all()
         recommend_list = []
         for data in datas:
@@ -52,12 +54,67 @@ def movie_detail(request, id):
                 recommend_list.append(data)
         recommend_list.remove(movie)  # 去除重复项
         other_info = GetOtherInfo(id)
-        context = {'movie': movie, 'recommend_list': recommend_list[:12], 'other_info': other_info}
+
+        conn = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user='root',
+            passwd='xt032341',
+            db='cinema',
+            use_unicode=True,
+            charset="utf8"
+        )
+        cursor = conn.cursor()
+        sql_str = 'SELECT * FROM Cinema_Pages_review WHERE movie_id_id = {0}'.format(id)
+        print(sql_str)
+        cursor.execute(sql_str)
+        reviews_raw = cursor.fetchall()
+        review_list = []
+        for review_r in reviews_raw:
+            review_list.append(Review(review_r))
+
+        form = ReviewForm()
+
+        context = {'movie': movie, 'recommend_list': recommend_list[:12], 'other_info': other_info,
+                   'review_list': review_list, 'form': form}
         return render(request, 'movie_detail.html', context)
     except (KeyError, ValueError):
         return render(request, '404.html')
         # pass
 
+
+def add_review(request, movie_id):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+            form.clean()
+            author = form.cleaned_data['author']
+            score = form.cleaned_data['score']
+            content = form.cleaned_data['content']
+
+            sql_str = "INSERT INTO Cinema_Pages_review VALUES (NULL, {movie_id}, {score}, NULL, \'{author}\', \'{content}\')".format(
+                movie_id=movie_id, score=score, author=author, content=content)
+
+            conn = MySQLdb.connect(
+                host='localhost',
+                port=3306,
+                user='root',
+                passwd='xt032341',
+                db='cinema',
+                # use_unicode=True,
+                charset="utf8"
+            )
+            cursor = conn.cursor()
+            cursor.execute(sql_str)
+            print(sql_str)
+
+            conn.commit()
+
+            cursor.close()
+            conn.close()
+
+    return redirect('../')
 
 def movie_search_by_genre(request, genre):
     try:
@@ -79,8 +136,8 @@ def movie_search_by_genre(request, genre):
 def movie_search_by_year(request, year):
     # 使用Movie.objects.filter(year = year)更佳
     try:
-        datas = Movie.objects.all()
         movies_list = []
+        datas = Movie.objects.all()
         for data in datas:
             if str(year) == data.year:
                 movies_list.append(data)
@@ -184,27 +241,3 @@ def search_by_year(request, year):
         return JsonResponse(json, safe=False)
     except:
         raise Http404("Movie does not exist.")
-
-def add_review(request, movie_id):
-    if request.method == 'POST':
-        form = ReviewForm(request.POST)
-
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.movie_id = movie_id
-
-            # TODO: raw sql insert
-
-
-            # 最终将评论数据保存进数据库，调用模型实例的 save 方法
-            # review.save()
-
-
-            # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
-            # 然后重定向到 get_absolute_url 方法返回的 URL。
-            return redirect(movie_id)
-
-        else:
-            return movie_detail(request, id=movie_id)
-
-    return redirect(movie_id)

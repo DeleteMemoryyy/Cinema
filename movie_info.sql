@@ -1,7 +1,7 @@
 -- create database if not exists Cinema;
 use Cinema;
 
--- SET NAMES utf8mb4;
+SET NAMES utf8mb4;
 
 -- SET FOREIGN_KEY_CHECKS = 0;
 
@@ -969,14 +969,13 @@ INSERT INTO Cinema_Pages_movie VALUES
 COMMIT;
 
 -- ----------------------------
--- Table structure for Cinema_Pages_comment
+-- Table structure for Cinema_Pages_review
 -- ----------------------------
-
-DROP TABLE IF EXISTS Cinema_Pages_comment;
-CREATE TABLE IF NOT EXISTS Cinema_Pages_comment (
-  comment_id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  movie_id   int(11) NOT NULL,
-  FOREIGN KEY (movie_id) REFERENCES Cinema_Pages_movie (id),
+DROP TABLE IF EXISTS Cinema_Pages_review;
+CREATE TABLE IF NOT EXISTS Cinema_Pages_review (
+  review_id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  movie_id_id   int(11) NOT NULL,
+  FOREIGN KEY (movie_id_id) REFERENCES Cinema_Pages_movie (id),
   score      int(1),
   time       TIMESTAMP,
   author     varchar(50)      DEFAULT NULL,
@@ -986,13 +985,13 @@ CREATE TABLE IF NOT EXISTS Cinema_Pages_comment (
   DEFAULT CHARSET = utf8;
 
 BEGIN;
-INSERT INTO Cinema_Pages_comment VALUES (NULL, 25917973, 3, NULL, 'author_1', 'good movie');
-INSERT INTO Cinema_Pages_comment VALUES (NULL, 25917973, 3, NULL, 'author_2', 'good movie');
-INSERT INTO Cinema_Pages_comment VALUES (NULL, 25917973, 3, NULL, 'author_3', '还行');
+INSERT INTO Cinema_Pages_review VALUES (NULL, 25917973, 3, NULL, 'author_1', 'good movie');
+INSERT INTO Cinema_Pages_review VALUES (NULL, 25917973, 3, NULL, 'author_2', 'good movie');
+INSERT INTO Cinema_Pages_review VALUES (NULL, 25917973, 3, NULL, 'author_3', '还行');
 COMMIT;
 
 SELECT *
-FROM Cinema_Pages_comment;
+FROM Cinema_Pages_review;
 -- -- ----------------------------
 -- -- Table structure for auth_group
 -- -- ----------------------------
