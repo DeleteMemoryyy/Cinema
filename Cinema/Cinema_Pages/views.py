@@ -1,11 +1,16 @@
-from django.shortcuts import render
-from .models import Movie
+from django.shortcuts import render, redirect
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import HttpResponse
+from django.views import View
 from .func import fuzzy_finder
 from .func import GetOtherInfo
+from .models import Movie
+from .models import Review
+from .forms import ReviewForm
+import MySQLdb
 
 
 def index(request):
@@ -26,6 +31,20 @@ def movie_display(request):
 def movie_detail(request, id):
     try:
         movie = Movie.objects.get(id=id)
+        if request.method == 'GET':
+            conn = MySQLdb.connect(
+                host='localhost',
+                port=3306,
+                user='root',
+                passwd='xt032341',
+                db='cinema'
+            )
+            cursor = conn.cursor()
+            sqlstr = 'SELECT * FROM Cinema_Pages_movie WHERE id = {0}'.format(id)
+            print(sqlstr)
+            cursor.execute(sqlstr)
+            values = cursor.fetchall()
+            print(values)
         datas = Movie.objects.all()
         recommend_list = []
         for data in datas:
@@ -165,3 +184,27 @@ def search_by_year(request, year):
         return JsonResponse(json, safe=False)
     except:
         raise Http404("Movie does not exist.")
+
+def add_review(request, movie_id):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.movie_id = movie_id
+
+            # TODO: raw sql insert
+
+
+            # 最终将评论数据保存进数据库，调用模型实例的 save 方法
+            # review.save()
+
+
+            # 重定向到 post 的详情页，实际上当 redirect 函数接收一个模型的实例时，它会调用这个模型实例的 get_absolute_url 方法，
+            # 然后重定向到 get_absolute_url 方法返回的 URL。
+            return redirect(movie_id)
+
+        else:
+            return movie_detail(request, id=movie_id)
+
+    return redirect(movie_id)

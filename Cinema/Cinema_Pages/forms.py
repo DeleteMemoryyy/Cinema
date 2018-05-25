@@ -1,9 +1,8 @@
-# from django import forms
-# from .models import Movie
+from django import forms
+from .models import Movie
+from .models import Review
 
-
-# class MovieSearchForm(forms.ModelForm):
-#     class Meta:
-#         model = Movie
-#         fields = ['title']
-#         labels = {'text': ''}
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['author', 'score', 'content']
