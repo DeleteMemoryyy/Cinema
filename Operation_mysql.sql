@@ -2,15 +2,21 @@ use MyCinema;
 SET NAMES utf8;
 
 -- trigger for updating stars
-/*create trigger compute_star after insert 
+drop trigger if exists compute_star;
+delimiter $
+create trigger compute_star after insert 
 on Review for each row
-update Movie set M_Star = M_Star + (new.R_Star * 2 - M_star) / 
-	(select COUNT(*) from Review where Review.M_Name = new.M_Name)
-	where Movie.M_Name = new.M_Name;
-*/
-
+begin
+update Movie set M_viewnumber = M_viewnumber + 1
+where Movie.M_id = new.M_id;
+update Movie set M_Star = M_Star + (new.R_score - M_star) / 
+	M_viewnumber
+	where Movie.M_id = new.M_id;
+end$
+delimiter ;
 
 Begin;
+
 /*#INSERT INTO Movie VALUES ('1291545', 'Big Fish', 2003, 'No kidding, a lot of heros died', 0);
 
 -- insert into Movie values ('0001', 'Avengers3: infinity war', 2018, 'No kidding, a lot of heros died', 0 );
@@ -94,7 +100,7 @@ INSERT INTO Belong VALUES (  1291552,'剧情');
 INSERT INTO Category VALUES ('动作' , NULL);
 INSERT INTO Belong VALUES (  1291552,'动作');
 INSERT INTO Belong VALUES (  1291552,'奇幻');
-INSERT INTO movie VALUES (   1291557 , '花样年华' , '花樣年華' , '2000' , NULL , 8.5 , 'https://movie.douban.com/subject/1291557/' , 'https://img3.doubanio.com/view/movie_poster_cover/spst/public/p1910828286.jpg'    
+INSERT INTO movie VALUES (   1291557 , '花样年华' , '花樣年華' , '2000' , NULL , 8.5 , 'https://movie.douban.com/subject/1291557/' , 'https://img1.doubanio.com/view/photo/raw/public/p537668489.jpg'    
  , 1 );
 INSERT INTO Director VALUES (5, '王家卫', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   1291557 ,  5 );
@@ -298,7 +304,7 @@ INSERT INTO Belong VALUES (  1291832,'剧情');
 INSERT INTO Belong VALUES (  1291832,'喜剧');
 INSERT INTO Category VALUES ('犯罪' , NULL);
 INSERT INTO Belong VALUES (  1291832,'犯罪');
-INSERT INTO movie VALUES (   1291841 , '教父' , 'The Godfather' , '1972' , NULL , 9.2 , 'https://movie.douban.com/subject/1291841/' , 'https://img3.doubanio.com/view/photo/l/public/p2190556185.webp'    
+INSERT INTO movie VALUES (   1291841 , '教父' , 'The Godfather' , '1972' , NULL , 9.2 , 'https://movie.douban.com/subject/1291841/' , 'https://img1.doubanio.com/view/photo/raw/public/p2194138787.jpg'    
  , 1 );
 INSERT INTO Director VALUES (23, '弗朗西斯·福特·科波拉', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   1291841 ,  23 );
@@ -1183,7 +1189,7 @@ INSERT INTO Play VALUES (   1295399 ,  268 );
 INSERT INTO Belong VALUES (  1295399,'动作');
 INSERT INTO Belong VALUES (  1295399,'冒险');
 INSERT INTO Belong VALUES (  1295399,'剧情');
-INSERT INTO movie VALUES (   1295409 , '纵横四海' , '緃横四海' , '1991' , NULL , 8.7 , 'https://movie.douban.com/subject/1295409/' , 'https://img3.doubanio.com/view/photo/raw/public/p2272146906.jpg'    
+INSERT INTO movie VALUES (   1295409 , '纵横四海' , '緃横四海' , '1991' , NULL , 8.7 , 'https://movie.douban.com/subject/1295409/' ,'https://img3.doubanio.com/view/photo/raw/public/p2272146906.jpg'   
  , 1 );
 INSERT INTO Director VALUES (97, '吴宇森', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   1295409 ,  97 );
@@ -1235,7 +1241,7 @@ INSERT INTO Play VALUES (   1296141 ,  280 );
 INSERT INTO Belong VALUES (  1296141,'剧情');
 INSERT INTO Belong VALUES (  1296141,'犯罪');
 INSERT INTO Belong VALUES (  1296141,'悬疑');
-INSERT INTO movie VALUES (   1296339 , '爱在黎明破晓前' , 'Before Sunrise' , '1995' , NULL , 8.7 , 'https://movie.douban.com/subject/1296339/' , 'https://img3.doubanio.com/view/photo/raw/public/p452582315.jpg'    
+INSERT INTO movie VALUES (   1296339 , '爱在黎明破晓前' , 'Before Sunrise' , '1995' , NULL , 8.7 , 'https://movie.douban.com/subject/1296339/' , 'https://img3.doubanio.com/view/photo/raw/public/p452582315.jpg'   
  , 1 );
 INSERT INTO Director VALUES (101, '理查德·林克莱特', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   1296339 ,  101 );
@@ -2077,7 +2083,7 @@ INSERT INTO Actor VALUES ('杰瑞德·莱托', NULL, NULL, NULL, 475);
 INSERT INTO Play VALUES (   1419936 ,  475 );
 INSERT INTO Belong VALUES (  1419936,'剧情');
 INSERT INTO Belong VALUES (  1419936,'犯罪');
-INSERT INTO movie VALUES (   1428175 , '血钻' , 'Blood Diamond' , '2006' , NULL , 8.5 , 'https://movie.douban.com/subject/1428175/' , 'https://img3.doubanio.com/view/photo/raw/public/p1244017073.jpg'    
+INSERT INTO movie VALUES (   1428175 , '血钻' , 'Blood Diamond' , '2006' , NULL , 8.5 , 'https://movie.douban.com/subject/1428175/' , 'https://img3.doubanio.com/view/photo/raw/public/p1244017073.jpg'   
  , 1 );
 INSERT INTO Director VALUES (177, '爱德华·兹威克', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   1428175 ,  177 );
@@ -2102,7 +2108,7 @@ INSERT INTO Actor VALUES ('克里斯托弗·瓦尔茨', NULL, NULL, NULL, 481);
 INSERT INTO Play VALUES (   1438652 ,  481 );
 INSERT INTO Belong VALUES (  1438652,'剧情');
 INSERT INTO Belong VALUES (  1438652,'犯罪');
-INSERT INTO movie VALUES (   1485260 , '本杰明·巴顿奇事' , 'The Curious Case of Benjamin Button' , '2008' , NULL , 8.7 , 'https://movie.douban.com/subject/1485260/' , 'https://img3.doubanio.com/view/photo/raw/public/p2192535722.jpg'    
+INSERT INTO movie VALUES (   1485260 , '本杰明·巴顿奇事' , 'The Curious Case of Benjamin Button' , '2008' , NULL , 8.7 , 'https://img3.doubanio.com/view/photo/raw/public/p2192535722.jpg' ,'https://img3.doubanio.com/view/photo/raw/public/p2192535722.jpg'
  , 1 );
 INSERT INTO Director VALUES (179, '大卫·芬奇', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   1485260 ,  179 );
@@ -2192,7 +2198,7 @@ INSERT INTO Play VALUES (   1793929 ,  502 );
 INSERT INTO Belong VALUES (  1793929,'剧情');
 INSERT INTO Belong VALUES (  1793929,'传记');
 INSERT INTO Belong VALUES (  1793929,'同性');
-INSERT INTO movie VALUES (   1849031 , '当幸福来敲门' , 'The Pursuit of Happyness' , '2006' , NULL , 8.9 , 'https://movie.douban.com/subject/1849031/' , 'https://img1.doubanio.com/view/photo/raw/public/p1312700628.jpg'    
+INSERT INTO movie VALUES (   1849031 , '当幸福来敲门' , 'The Pursuit of Happyness' , '2006' , NULL , 8.9 , 'https://movie.douban.com/subject/1849031/' , 'https://img1.doubanio.com/view/photo/raw/public/p1312700628.jpg'   
  , 1 );
 INSERT INTO Director VALUES (186, '加布里埃莱·穆奇诺', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   1849031 ,  186 );
@@ -2410,7 +2416,7 @@ INSERT INTO Play VALUES (   2129039 ,  553 );
 INSERT INTO Belong VALUES (  2129039,'剧情');
 INSERT INTO Belong VALUES (  2129039,'喜剧');
 INSERT INTO Belong VALUES (  2129039,'动画');
-INSERT INTO movie VALUES (   2131459 , '机器人总动员' , 'WALL·E' , '2008' , NULL , 9.3 , 'https://movie.douban.com/subject/2131459/' , 'https://img3.doubanio.com/view/photo/raw/public/p1461851991.jpg'    
+INSERT INTO movie VALUES (   2131459 , '机器人总动员' , 'WALL·E' , '2008' , NULL , 9.3 , 'https://movie.douban.com/subject/2131459/' , 'https://img3.doubanio.com/view/photo/raw/public/p1461851991.jpg'  
  , 1 );
 INSERT INTO Director VALUES (204, '安德鲁·斯坦顿', NULL, NULL, NULL);
 INSERT INTO Direct VALUES (   2131459 ,  204 );
