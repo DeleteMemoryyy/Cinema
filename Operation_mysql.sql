@@ -15,6 +15,18 @@ update Movie set M_Star = M_Star + (new.R_score - M_star) /
 end$
 delimiter ;
 
+drop procedure if exists queryid；
+
+delimiter $
+create procedure queryid(IN id int)
+begin
+select * from fullmovie where m_id = id;
+end$
+
+
+CALL queryid(1291545)
+delimiter ;
+
 Begin;
 
 /*#INSERT INTO Movie VALUES ('1291545', 'Big Fish', 2003, 'No kidding, a lot of heros died', 0);
