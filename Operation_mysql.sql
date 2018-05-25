@@ -15,6 +15,8 @@ update Movie set M_Star = M_Star + (new.R_score - M_star) /
 end$
 delimiter ;
 
+
+-- procedure to protext query by id
 drop procedure if exists queryid；
 
 delimiter $
@@ -22,9 +24,49 @@ create procedure queryid(IN id int)
 begin
 select * from fullmovie where m_id = id;
 end$
+delimiter ;
+
+-- procedure to protect insert review
+drop procedure if exists insertreview；
+
+delimiter $
+create procedure insertreview(IN M_id int, IN R_score float, IN R_author varchar(255), In content longtext)
+begin
+insert into Review values (NUll, M_id, R_score, NULL, R_author, content);
+end$
+delimiter ;
+
+call insertreview(1291545, 8.5, 'asdfa', 'asdfasd');
+
+-- procedure to protext querybygenre
+drop procedure  querygerne;
+
+delimiter $
+create procedure querygerne(IN gerne varchar(255) charset utf8)
+begin
+select * from fullmovie where c_name = gerne;
+end$
+delimiter ;
+
+call querygerne('家庭');
 
 
-CALL queryid(1291545)
+-- procedure to protext querybyyear
+drop procedure  queryyear;
+
+delimiter $
+create procedure queryyear(IN gerne varchar(255) charset utf8)
+begin
+select * from fullmovie where c_name = gerne;
+end$
+delimiter ;
+
+call querygerne('家庭');
+
+
+
+
+CALL queryid(1291545);
 delimiter ;
 
 Begin;

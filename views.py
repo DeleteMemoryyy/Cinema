@@ -59,7 +59,7 @@ def movie_detail(request, id):
         
         db = MySQLdb.connect('localhost', 'root', 'mysql9772', 'mycinema',use_unicode=True, charset="utf8")
         cur = db.cursor()
-        sqlquery = 'select * from fullmovie where M_id ='  + str(id) + ';'
+        sqlquery = 'CALL queryid(' + str(id) + ');'
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
         

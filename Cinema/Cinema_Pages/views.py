@@ -25,7 +25,7 @@ def movie_display(request):
             host='localhost',
             port=3306,
             user='root',
-            passwd='xt032341',
+            passwd='mysql9772',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -66,7 +66,7 @@ def movie_detail(request, id):
                 host='localhost',
                 port=3306,
                 user='root',
-                passwd='xt032341',
+                passwd='mysql9772',
                 db='cinema'
             )
             cursor = conn.cursor()
@@ -87,13 +87,14 @@ def movie_detail(request, id):
             host='localhost',
             port=3306,
             user='root',
-            passwd='xt032341',
+            passwd='mysql9772',
             db='cinema',
             use_unicode=True,
             charset="utf8"
         )
         cur = db.cursor()
-        sqlquery = 'select * from fullmovie where M_id =' + str(id) + ';'
+        #sqlquery = 'select * from fullmovie where M_id =' + str(id) + ';'
+        sqlquery = 'call queryid(' + str(id) + ');'
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 
@@ -156,7 +157,7 @@ def movie_detail(request, id):
             host='localhost',
             port=3306,
             user='root',
-            passwd='xt032341',
+            passwd='mysql9772',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -190,14 +191,16 @@ def add_review(request, movie_id):
             score = form.cleaned_data['score']
             content = form.cleaned_data['content']
 
-            sql_str = "INSERT INTO review VALUES (NULL, {movie_id}, {score}, NULL, \'{author}\', \'{content}\')".format(
-                movie_id=movie_id, score=score, author=author, content=content)
+            #sql_str = "INSERT INTO review VALUES (NULL, {movie_id}, {score}, NULL, \'{author}\', \'{content}\')".format(
+            #    movie_id=movie_id, score=score, author=author, content=content)
 
+            sql_str = 'call insertreview({m_id}, {score}, \'{author}\', \'{content}\');'.format(m_id = movie_id, \
+                                        score = score, author = author, content = content)
             conn = MySQLdb.connect(
                 host='localhost',
                 port=3306,
                 user='root',
-                passwd='xt032341',
+                passwd='mysql9772',
                 db='cinema',
                 # use_unicode=True,
                 charset="utf8"
@@ -227,13 +230,14 @@ def movie_search_by_genre(request, genre):
             host='localhost',
             port=3306,
             user='root',
-            passwd='xt032341',
+            passwd='mysql9772',
             db='cinema',
             use_unicode=True,
             charset="utf8"
         )
         cur = db.cursor()
-        sqlquery = 'select * from fullmovie where C_name = \'' + str(genre) + '\';'
+        #sqlquery = 'select * from fullmovie where C_name = \'' + str(genre) + '\';'
+        sqlquery = 'call querygerne(\'{0}\');'.format(genre)
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 
@@ -267,7 +271,7 @@ def movie_search_by_year(request, year):
             host='localhost',
             port=3306,
             user='root',
-            passwd='xt032341',
+            passwd='mysql9772',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -287,7 +291,7 @@ def movie_search_by_year(request, year):
                 start_id, title, image = mv[0], mv[2], mv[5];
                 rating = mv[7]
                 tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
-                            rating, 'directors', 'casts', 'intro', '1', '1')
+                            rating, 'directors', 'casts', 'intro', '1')
                 movies_list.append(tmp)
 
         # datas = Movie.objects.all()
@@ -332,7 +336,7 @@ def movie_search_form(request):
             host='localhost',
             port=3306,
             user='root',
-            passwd='xt032341',
+            passwd='mysql9772',
             db='cinema',
             use_unicode=True,
             charset="utf8"

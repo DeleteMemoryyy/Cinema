@@ -85,7 +85,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'cinema',
         'USER': 'root',  #数据库登录用户名
-        'PASSWORD': 'xt032341',  #数据库登录密码
+        'PASSWORD': 'mysql9772',  #数据库登录密码
         'HOST': 'localhost',  #数据库所在主机
         'PORT': '3306',  #数据库端口
     }
