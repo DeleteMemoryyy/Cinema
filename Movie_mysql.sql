@@ -3,9 +3,9 @@
 /* Created on:     2018/5/24 16:18:59                           */
 /*==============================================================*/
 
-drop database if exists mycinema ;
-create database if not exists MyCinema;
-use MyCinema;
+drop database if exists cinema ;
+create database if not exists cinema;
+use cinema;
 
 SET NAMES utf8;
 

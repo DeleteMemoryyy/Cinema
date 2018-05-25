@@ -1,4 +1,4 @@
-use MyCinema;
+use cinema;
 SET NAMES utf8;
 
 -- trigger for updating stars
@@ -3240,23 +3240,12 @@ INSERT INTO Belong VALUES (  25917973,'悬疑');
 -- a simple query example.
 -- todo: can build a view to simplify this
 
+
 -- create a view to simplify query operation
+DROP VIEW IF EXISTS fullmovie;
 CREATE VIEW fullmovie AS
-SELECT Movie.M_id, M_alt, Movie.M_name, M_originalname, M_releaseDate, M_image, C_name, M_star, D_name, A_name, M_intro
+SELECT Movie.M_id, M_alt, Movie.M_name, M_originalname, M_releaseDate, M_image, C_name, M_star, D_name, A_name, M_intro, M_viewnumber
 FROM Movie, Director, Direct, Actor, play, belong
 WHERE  Movie.M_id = Direct.M_id and Director.D_id = Direct.D_id
 	and Movie.M_id = Play.M_id and Play.A_id = Actor.A_id and Movie.M_id = Belong.M_id;
-
-
-begin;
-/*select M_id, Movie.M_Name, M_originalname, M_releaseDate, M_intro, M_star, M_alt, M_image, D_name, C_name, A_name
-from Movie, Director, Direct, Belong, Actor, Play
-where M_originalname = 'big fish' and Movie.M_name = Direct.M_name and Director.D_id = Direct.D_id
-	and Movie.M_name = Play.M_name and Play.A_id = Actor.A_id and Movie.M_name = Belong.M_name;*/
-
-select *
-from fullmovie
-order by M_releasedate DESC;
-commit;
-
 

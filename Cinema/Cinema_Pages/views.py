@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-from .models import MyMovie
 from django.shortcuts import render, redirect
 from django.forms.models import model_to_dict
 from django.http import JsonResponse
@@ -22,26 +21,33 @@ def index(request):
 
 def movie_display(request):
     try:
-        db = MySQLdb.connect('localhost', 'root', 'mysql9772', 'mycinema',use_unicode=True, charset="utf8")
+        db = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user='root',
+            passwd='xt032341',
+            db='cinema',
+            use_unicode=True,
+            charset="utf8"
+        )
         cur = db.cursor()
         sqlquery = 'select * from fullmovie order by M_releaseDate desc;'
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 
-
         movies_list = []
 
         start_id, title, image = res[0][0], res[0][2], res[0][5]
-        rating= res[0][7]
-        movies_list.append(MyMovie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a'))
+        rating = res[0][7]
+        movies_list.append(Movie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a', '1'))
         for mv in res:
             if mv[0] != start_id:
-                start_id, title,image = mv[0], mv[2],  mv[5];
-                rating= mv[7]
-                tmp = MyMovie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
-                    rating, 'directors', 'casts', 'intro')
+                start_id, title, image = mv[0], mv[2], mv[5];
+                rating = mv[7]
+                tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
+                            rating, 'directors', 'casts', 'intro', '1')
                 movies_list.append(tmp)
-        #movies_list = Movie.objects.order_by('-year')  # 降序
+        # movies_list = Movie.objects.order_by('-year')  # 降序
 
         paginator = Paginator(movies_list, 30)
         page = request.GET.get('page')
@@ -77,28 +83,36 @@ def movie_detail(request, id):
         recommend_list.remove(movie)  # 去除重复项
         '''
 
-        db = MySQLdb.connect('localhost', 'root', 'mysql9772', 'mycinema',use_unicode=True, charset="utf8")
+        db = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user='root',
+            passwd='xt032341',
+            db='cinema',
+            use_unicode=True,
+            charset="utf8"
+        )
         cur = db.cursor()
-        sqlquery = 'select * from fullmovie where M_id ='  + str(id) + ';'
+        sqlquery = 'select * from fullmovie where M_id =' + str(id) + ';'
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 
-        #print(res)
+        # print(res)
 
-        start_id,alt, title, ori_title = res[0][0], res[0][1], res[0][2], res[0][3]
+        start_id, alt, title, ori_title = res[0][0], res[0][1], res[0][2], res[0][3]
         year, image = res[0][4], res[0][5]
         d_list, a_list, g_list = [], [], []
-        gener = res[0][-5]
+        gener = res[0][-6]
         rating = res[0][7]
         for mv in res:
-            if mv[-3] not in d_list:
-                d_list.append(mv[-3])
+            if mv[-4] not in d_list:
+                d_list.append(mv[-4])
 
-            if mv[-2] not in a_list:
-                a_list.append(mv[-2])
+            if mv[-3] not in a_list:
+                a_list.append(mv[-3])
 
-            if mv[-5] not in g_list:
-                g_list.append(mv[-5])
+            if mv[-6] not in g_list:
+                g_list.append(mv[-6])
 
         directors = d_list[0]
         for i in range(1, len(d_list)):
@@ -112,28 +126,29 @@ def movie_detail(request, id):
         for i in range(1, len(g_list)):
             genres += ',' + g_list[i]
 
+        view_number = res[0][-1]
+
         print(directors)
         print(casts)
         print(genres)
-        movie = MyMovie(start_id, alt, title, ori_title, year, image, genres, 'NULL', \
-            rating, directors, casts, 'intro')
+        movie = Movie(start_id, alt, title, ori_title, year, image, genres, 'NULL', \
+                      rating, directors, casts, 'intro', view_number)
 
         print(gener)
-        genresearchsql = 'select * from fullmovie where c_name = \'' + gener +'\';'
+        genresearchsql = 'select * from fullmovie where c_name = \'' + gener + '\';'
         recommend_res_ = cur.execute(genresearchsql)
         reommend_res = cur.fetchmany(recommend_res_)
         recommend_list = []
         start_id, title, image = reommend_res[0][0], reommend_res[0][2], reommend_res[0][5]
-        rating= reommend_res[0][7]
-        recommend_list.append(MyMovie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a'))
+        rating = reommend_res[0][7]
+        recommend_list.append(Movie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a', '1'))
         for mv in reommend_res:
             if mv[0] != start_id:
-                start_id, title,image = mv[0], mv[2],  mv[5];
-                rating= mv[7]
-                tmp = MyMovie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
-                    rating, 'directors', 'casts', 'intro')
+                start_id, title, image = mv[0], mv[2], mv[5];
+                rating = mv[7]
+                tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
+                            rating, 'directors', 'casts', 'intro', '1')
                 recommend_list.append(tmp)
-
 
         other_info = GetOtherInfo(id)
 
@@ -147,7 +162,7 @@ def movie_detail(request, id):
             charset="utf8"
         )
         cursor = conn.cursor()
-        sql_str = 'SELECT * FROM Cinema_Pages_review WHERE movie_id_id = {0}'.format(id)
+        sql_str = 'SELECT * FROM review WHERE M_id = {0}'.format(id)
         print(sql_str)
         cursor.execute(sql_str)
         reviews_raw = cursor.fetchall()
@@ -175,7 +190,7 @@ def add_review(request, movie_id):
             score = form.cleaned_data['score']
             content = form.cleaned_data['content']
 
-            sql_str = "INSERT INTO Cinema_Pages_review VALUES (NULL, {movie_id}, {score}, NULL, \'{author}\', \'{content}\')".format(
+            sql_str = "INSERT INTO review VALUES (NULL, {movie_id}, {score}, NULL, \'{author}\', \'{content}\')".format(
                 movie_id=movie_id, score=score, author=author, content=content)
 
             conn = MySQLdb.connect(
@@ -198,6 +213,7 @@ def add_review(request, movie_id):
 
     return redirect('../')
 
+
 def movie_search_by_genre(request, genre):
     try:
         '''
@@ -207,27 +223,34 @@ def movie_search_by_genre(request, genre):
         if genre in data.genres:
         movies_list.append(data)
         '''
-        db = MySQLdb.connect('localhost', 'root', 'mysql9772', 'mycinema',use_unicode=True, charset="utf8")
+        db = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user='root',
+            passwd='xt032341',
+            db='cinema',
+            use_unicode=True,
+            charset="utf8"
+        )
         cur = db.cursor()
         sqlquery = 'select * from fullmovie where C_name = \'' + str(genre) + '\';'
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 
-
         movies_list = []
 
         start_id, title, image = res[0][0], res[0][2], res[0][5]
-        rating= res[0][7]
-        movies_list.append(MyMovie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a'))
+        rating = res[0][7]
+        movies_list.append(Movie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a', '1'))
         for mv in res:
             if mv[0] != start_id:
-                start_id, title,image = mv[0], mv[2],  mv[5];
-                rating= mv[7]
-                tmp = MyMovie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
-                    rating, 'directors', 'casts', 'intro')
+                start_id, title, image = mv[0], mv[2], mv[5];
+                rating = mv[7]
+                tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
+                            rating, 'directors', 'casts', 'intro', '1')
                 movies_list.append(tmp)
 
-        #print(movies_list)
+        # print(movies_list)
         paginator = Paginator(movies_list, 12)
         page = request.GET.get('page')
         movies = paginator.get_page(page)
@@ -240,7 +263,15 @@ def movie_search_by_genre(request, genre):
 def movie_search_by_year(request, year):
     # 使用Movie.objects.filter(year = year)更佳
     try:
-        db = MySQLdb.connect('localhost', 'root', 'mysql9772', 'mycinema',use_unicode=True, charset="utf8")
+        db = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user='root',
+            passwd='xt032341',
+            db='cinema',
+            use_unicode=True,
+            charset="utf8"
+        )
         cur = db.cursor()
         sqlquery = 'select * from fullmovie where M_releaseDate = \'' + str(year) + '\';'
         res_ = cur.execute(sqlquery)
@@ -249,14 +280,14 @@ def movie_search_by_year(request, year):
         movies_list = []
 
         start_id, title, image = res[0][0], res[0][2], res[0][5]
-        rating= res[0][7]
-        movies_list.append(MyMovie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a'))
+        rating = res[0][7]
+        movies_list.append(Movie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a', '1'))
         for mv in res:
             if mv[0] != start_id:
-                start_id, title,image = mv[0], mv[2],  mv[5];
-                rating= mv[7]
-                tmp = MyMovie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
-                    rating, 'directors', 'casts', 'intro')
+                start_id, title, image = mv[0], mv[2], mv[5];
+                rating = mv[7]
+                tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
+                            rating, 'directors', 'casts', 'intro', '1', '1')
                 movies_list.append(tmp)
 
         # datas = Movie.objects.all()
@@ -268,7 +299,6 @@ def movie_search_by_year(request, year):
         #     else:
         #         if str(year) == data.year[:2]:
         #             movies_list.append(data)
-
 
         paginator = Paginator(movies_list, 12)
 
@@ -295,24 +325,32 @@ def movie_search_form(request):
     # 模糊查询
     try:
         q = request.POST.get('q')
-        #collection = Movie.objects.all()
+        # collection = Movie.objects.all()
         collection = []
 
-        db = MySQLdb.connect('localhost', 'root', 'mysql9772', 'mycinema',use_unicode=True, charset="utf8")
+        db = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user='root',
+            passwd='xt032341',
+            db='cinema',
+            use_unicode=True,
+            charset="utf8"
+        )
         cur = db.cursor()
         sqlquery = 'select * from fullmovie;'
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 
         start_id, title, image = res[0][0], res[0][2], res[0][5]
-        rating= res[0][7]
-        collection.append(MyMovie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a'))
+        rating = res[0][7]
+        collection.append(Movie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a', '1'))
         for mv in res:
             if mv[0] != start_id:
-                start_id, title,image = mv[0], mv[2],  mv[5];
-                rating= mv[7]
-                tmp = MyMovie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
-                    rating, 'directors', 'casts', 'intro')
+                start_id, title, image = mv[0], mv[2], mv[5];
+                rating = mv[7]
+                tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', \
+                            rating, 'directors', 'casts', 'intro', '1')
                 collection.append(tmp)
 
         movies_list = fuzzy_finder(q, collection)
@@ -323,16 +361,15 @@ def movie_search_form(request):
     except:
         return render(request, '404.html')
 
-
 # API
 
-
-def search_by_id(request, id):
-    try:
-        data = model_to_dict(Movie.objects.get(id=id))
-    except:
-        raise Http404("Movie does not exist.")
-    return JsonResponse(data, safe=False)
+#
+# def search_by_id(request, id):
+#     try:
+#         data = model_to_dict(Movie.objects.get(id=id))
+#     except:
+#         raise Http404("Movie does not exist.")
+#     return JsonResponse(data, safe=False)
 
 
 # a new api for reference
@@ -345,45 +382,45 @@ def search_by_id(request, id):
 #     return JsonResponse(data, safe=False)
 
 
-def search_by_title(request, title):
-    try:
-        data = model_to_dict(Movie.objects.get(title=title))
-        return JsonResponse(data, safe=False)
-    except:
-        raise Http404("Movie does not exist.")
-
-
-def search_by_original_title(request, original_title):
-    try:
-        data = model_to_dict(Movie.objects.get(original_title=original_title))
-        return JsonResponse(data, safe=False)
-    except:
-        raise Http404("Movie does not exist.")
-
-
-def search_by_genre(request, genre):
-    try:
-        data = list(Movie.objects.all())
-        find = []
-        json = {}
-        for d in data:
-            if genre in model_to_dict(d)['genres']:
-                find.append(model_to_dict(d))
-        json['subject'] = find
-        return JsonResponse(json, safe=False)
-    except:
-        raise Http404("Movie does not exist.")
-
-
-def search_by_year(request, year):
-    try:
-        data = list(Movie.objects.all())
-        find = []
-        json = {}
-        for d in data:
-            if year == model_to_dict(d)['year']:
-                find.append(model_to_dict(d))
-        json['subject'] = find
-        return JsonResponse(json, safe=False)
-    except:
-        raise Http404("Movie does not exist.")
+# def search_by_title(request, title):
+#     try:
+#         data = model_to_dict(Movie.objects.get(title=title))
+#         return JsonResponse(data, safe=False)
+#     except:
+#         raise Http404("Movie does not exist.")
+#
+#
+# def search_by_original_title(request, original_title):
+#     try:
+#         data = model_to_dict(Movie.objects.get(original_title=original_title))
+#         return JsonResponse(data, safe=False)
+#     except:
+#         raise Http404("Movie does not exist.")
+#
+#
+# def search_by_genre(request, genre):
+#     try:
+#         data = list(Movie.objects.all())
+#         find = []
+#         json = {}
+#         for d in data:
+#             if genre in model_to_dict(d)['genres']:
+#                 find.append(model_to_dict(d))
+#         json['subject'] = find
+#         return JsonResponse(json, safe=False)
+#     except:
+#         raise Http404("Movie does not exist.")
+#
+#
+# def search_by_year(request, year):
+#     try:
+#         data = list(Movie.objects.all())
+#         find = []
+#         json = {}
+#         for d in data:
+#             if year == model_to_dict(d)['year']:
+#                 find.append(model_to_dict(d))
+#         json['subject'] = find
+#         return JsonResponse(json, safe=False)
+#     except:
+#         raise Http404("Movie does not exist.")
