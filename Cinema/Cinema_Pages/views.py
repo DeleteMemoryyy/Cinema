@@ -278,10 +278,13 @@ def movie_search_by_year(request, year):
         )
         cur = db.cursor()
         if year == '19':
-            sqlquery = 'select * from fullmovie where M_releaseDate < \'' + str(1990) + '\';'
+            #sqlquery = 'select * from fullmovie where M_releaseDate < \'' + str(1990) + '\';'
+            sqlquery = 'call queryyear2();'
         else:
-            sqlquery = 'select * from fullmovie where M_releaseDate = \'' + str(year) + '\';'
-
+            #sqlquery = 'select * from fullmovie where M_releaseDate = \'' + str(year) + '\';'
+            sqlquery = 'call queryyear(\'{0}\');'.format(str(year))
+            
+             
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 

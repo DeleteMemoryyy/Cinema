@@ -18,10 +18,6 @@ delimiter ;
 
 -- procedure to protext query by id
 drop procedure if exists queryid;
-<<<<<<< HEAD
-
-=======
->>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
 delimiter $
 create procedure queryid(IN id int)
 begin
@@ -39,12 +35,7 @@ end$
 delimiter ;
 
 -- procedure to protext querybygenre
-<<<<<<< HEAD
-drop procedure if exists  querygerne;
-
-=======
 drop procedure  if exists querygerne;
->>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
 delimiter $
 create procedure querygerne(IN gerne varchar(255) charset utf8)
 begin
@@ -54,29 +45,22 @@ delimiter ;
 
 
 -- procedure to protext querybyyear
-<<<<<<< HEAD
-drop procedure if exists queryyear;
-
-=======
 drop procedure  if exists queryyear;
->>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
 delimiter $
-create procedure queryyear(IN y varchar(255))
+create procedure queryyear(IN y varchar(255) charset utf8)
 begin
 select * from fullmovie where M_releasedate = y;
 end$
 delimiter ;
 
-<<<<<<< HEAD
-call queryyear('2003');
-
-
-
-
-CALL queryid(1291545);
+drop procedure  if exists queryyear2;
+delimiter $
+create procedure queryyear2()
+begin
+select * from fullmovie where M_releasedate < '1990';
+end$
 delimiter ;
-=======
->>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
+
 
 Begin;
 
