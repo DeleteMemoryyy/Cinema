@@ -27,10 +27,10 @@ end$
 delimiter ;
 
 -- procedure to protect insert review
-drop procedure if exists insertreview；
+drop procedure if exists insertreview;
 
 delimiter $
-create procedure insertreview(IN M_id int, IN R_score float, IN R_author varchar(255), In content longtext)
+create procedure insertreview(IN M_id int, IN R_score float, IN R_author varchar(255) charset utf8, In content longtext charset utf8)
 begin
 insert into Review values (NUll, M_id, R_score, NULL, R_author, content);
 end$
