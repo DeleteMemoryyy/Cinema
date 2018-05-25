@@ -277,7 +277,11 @@ def movie_search_by_year(request, year):
             charset="utf8"
         )
         cur = db.cursor()
-        sqlquery = 'select * from fullmovie where M_releaseDate = \'' + str(year) + '\';'
+        if year == '19':
+            sqlquery = 'select * from fullmovie where M_releaseDate < \'' + str(1990) + '\';'
+        else:
+            sqlquery = 'select * from fullmovie where M_releaseDate = \'' + str(year) + '\';'
+
         res_ = cur.execute(sqlquery)
         res = cur.fetchmany(res_)
 
@@ -310,6 +314,7 @@ def movie_search_by_year(request, year):
         movies = paginator.get_page(page)
         context = {'movies': movies}
         return render(request, 'movie_display.html', context)
+
     except:
         print('render gots an error!')
         return render(request, '404.html')
