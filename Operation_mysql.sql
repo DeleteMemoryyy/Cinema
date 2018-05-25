@@ -18,7 +18,10 @@ delimiter ;
 
 -- procedure to protext query by id
 drop procedure if exists queryid;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
 delimiter $
 create procedure queryid(IN id int)
 begin
@@ -28,7 +31,6 @@ delimiter ;
 
 -- procedure to protect insert review
 drop procedure if exists insertreview;
-
 delimiter $
 create procedure insertreview(IN M_id int, IN R_score float, IN R_author varchar(255) charset utf8, In content longtext charset utf8)
 begin
@@ -36,11 +38,13 @@ insert into Review values (NUll, M_id, R_score, NULL, R_author, content);
 end$
 delimiter ;
 
-call insertreview(1291545, 8.5, 'asdfa', 'asdfasd');
-
 -- procedure to protext querybygenre
+<<<<<<< HEAD
 drop procedure if exists  querygerne;
 
+=======
+drop procedure  if exists querygerne;
+>>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
 delimiter $
 create procedure querygerne(IN gerne varchar(255) charset utf8)
 begin
@@ -48,12 +52,14 @@ select * from fullmovie where c_name = gerne;
 end$
 delimiter ;
 
-call querygerne('家庭');
-
 
 -- procedure to protext querybyyear
+<<<<<<< HEAD
 drop procedure if exists queryyear;
 
+=======
+drop procedure  if exists queryyear;
+>>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
 delimiter $
 create procedure queryyear(IN y varchar(255))
 begin
@@ -61,6 +67,7 @@ select * from fullmovie where M_releasedate = y;
 end$
 delimiter ;
 
+<<<<<<< HEAD
 call queryyear('2003');
 
 
@@ -68,6 +75,8 @@ call queryyear('2003');
 
 CALL queryid(1291545);
 delimiter ;
+=======
+>>>>>>> 49a0e699bb8cdcbd8d8a1dc7408ea46e4a7cae74
 
 Begin;
 
@@ -3289,7 +3298,7 @@ INSERT INTO Play VALUES (   25917973 ,  745 );
 INSERT INTO Belong VALUES (  25917973,'剧情');
 INSERT INTO Belong VALUES (  25917973,'犯罪');
 INSERT INTO Belong VALUES (  25917973,'悬疑');
-
+COMMIT;
 
 
 -- a simple query example.
