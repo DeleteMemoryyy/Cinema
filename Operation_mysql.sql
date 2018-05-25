@@ -17,7 +17,7 @@ delimiter ;
 
 
 -- procedure to protext query by id
-drop procedure if exists queryid；
+drop procedure if exists queryid;
 
 delimiter $
 create procedure queryid(IN id int)
@@ -39,7 +39,7 @@ delimiter ;
 call insertreview(1291545, 8.5, 'asdfa', 'asdfasd');
 
 -- procedure to protext querybygenre
-drop procedure  querygerne;
+drop procedure if exists  querygerne;
 
 delimiter $
 create procedure querygerne(IN gerne varchar(255) charset utf8)
@@ -52,16 +52,16 @@ call querygerne('家庭');
 
 
 -- procedure to protext querybyyear
-drop procedure  queryyear;
+drop procedure if exists queryyear;
 
 delimiter $
-create procedure queryyear(IN gerne varchar(255) charset utf8)
+create procedure queryyear(IN y varchar(255))
 begin
-select * from fullmovie where c_name = gerne;
+select * from fullmovie where M_releasedate = y;
 end$
 delimiter ;
 
-call querygerne('家庭');
+call queryyear('2003');
 
 
 
