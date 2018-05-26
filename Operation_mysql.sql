@@ -1,6 +1,22 @@
 use cinema;
 SET NAMES utf8;
 
+-- create users to protect the data
+CREATE USER 'query'@'localhost' IDENTIFIED BY 'query';
+grant execute ON procedure cinema.queryid TO 'query'@'localhost' identified by 'query';
+grant execute ON procedure cinema.queryyear TO 'query'@'localhost' identified by 'query';
+grant execute ON procedure cinema.queryyear2 TO 'query'@'localhost' identified by 'query';
+grant execute ON procedure cinema.querygerne TO 'query'@'localhost' identified by 'query';
+grant select on cinema.fullmovie to 'query'@'localhost' identified by 'query';
+grant select on cinema.review to 'query'@'localhost' identified by 'query';
+
+
+CREATE USER 'insert'@'localhost' IDENTIFIED BY 'insert';
+grant execute ON procedure cinema.insertreview TO 'insert'@'localhost' identified by 'insert';
+FLUSH PRIVILEGES;
+
+
+
 -- trigger for updating stars
 drop trigger if exists compute_star;
 delimiter $
@@ -34,15 +50,20 @@ insert into Review values (NUll, M_id, R_score, NULL, R_author, content);
 end$
 delimiter ;
 
+
+call insertreview(1291545, 3, '1', 'asdf\'); select * from fullmovie;--\'');
+
 -- procedure to protext querybygenre
 drop procedure  if exists querygerne;
 delimiter $
 create procedure querygerne(IN gerne varchar(255) charset utf8)
 begin
+select gerne;
 select * from fullmovie where c_name = gerne;
 end$
 delimiter ;
 
+#call querygerne(' ';select * from fullmovie;# \" ');
 
 -- procedure to protext querybyyear
 drop procedure  if exists queryyear;
