@@ -61,8 +61,8 @@
     <!-- bloc-0 END -->
 
     <!-- bloc-1 -->
-    <div class="bloc bgc-splashed-white l-bloc" id="bloc-1">
-        <div style="float:left;width:500px">
+    <div class="bloc bgc-splashed-white l-bloc" id="bloc-1" style="margin-top:20px">
+        <div style="float:left;width:800px">
             <div class="container bloc-lg">
                 <h2 class="movie-name">{{movie.title}} — {{movie.original_title}} ({{movie.year}})</h2>
                 <div class="row voffset">
@@ -95,7 +95,7 @@
 
                 </div>
 
-                <div class="col-sm-12">
+                <div class="col-sm-12" style="margin-top:30px">
                     <div>
                         <h3 class="detail-page-title"><span
                                 class="label label-primary">剧情简介</span><span> </span></h3>
@@ -105,120 +105,129 @@
                         <!--class="label label-info" style="width: 30px;height: 20px">@豆瓣</span></a>-->
                         <!--</h4>-->
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-sm-9" style="margin-top:10px">
                         <p style="text-indent: 2em">{{other_info.intro}}<a
                                 href="https://movie.douban.com/subject/{{movie.id}}/"><span
-                                class="">豆瓣</span></a>
+                                class="">©豆瓣</span></a>
                         </p>
                     </div>
                 </div>
 
                 <!--豆瓣影评 Top5-->
-                <div class="col-sm-12">
+                <div class="col-sm-12" style="margin-top:30px">
                     <div>
                         <h3 class="detail-page-title"><span class="label label-primary">豆瓣影评 Top5</span></h3>
                     </div>
-                    {% for i in other_info.reviews %}
-                    <div class="col-sm-8 reviews">
-                        <div class="review-item">
-                            <header class="main-hd">
-                                <img width="28" height="28" src="{{i.author.avatar}}"
-                                     style="border:#337ab7;border-style:double">
-                                <span>&nbsp;&nbsp;
-                            <a href="{{i.alt}}/">
-                                <span class="label label-info">
-                                    {{i.title}}
-                                </span>
-                            </a>
-                        </span>
-                            </header>
-
-                            <div class="review-summary">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{i.summary}}
+                    <div style="margin-top:10px">
+                        {% for i in other_info.reviews %}
+                        <div class="col-sm-9 reviews" style="margin-top:20px">
+                            <div class="review-item">
+                                <a href="{{i.alt}}/">
+                                    <img width="28" height="28" src="{{i.author.avatar}}"
+                                         style="border:#337ab7;border-style:double">
+                                    <span class="label label-info">{{i.title}}</span>
+                                    <div class="review-summary">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{i.summary}}
+                                    </div>
+                                </a>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
                 <!--豆瓣影评 Top5 END-->
 
                 <!--本站影评-->
-                <div class="col-sm-12">
+                {% if not review_list is None %}
+                <div class="col-sm-12" style="margin-top:30px">
                     <div>
                         <h3 class="detail-page-title"><span class="label label-primary">本站影评</span></h3>
                     </div>
-                    {% for i in review_list %}
-                    <div class="col-sm-8 reviews">
-                        <div class="review-item">
-                            <header class="main-hd">
+                    <div style="margin-top:10px">
+                        {% for i in review_list %}
+                        <div class="col-sm-9 reviews" style="margin-top:20px">
+                            <div class="review-item">
+                                <header class="main-hd">
                                 <span class="label label-info">
                                     {{i.author}}
                                 </span>
-                                </span>
-                            </header>
+                                    </span>
+                                </header>
 
-                            <div class="review-summary">
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{i.content}}
+                                <div class="review-summary">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{i.content}}
+                                </div>
                             </div>
                         </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
+                {% endif %}
                 <!--本站影评 END-->
 
                 <!--添加影评-->
-                <form action="{% url 'add_review' movie.id %}" method="post" class="comment-form">
-                    {% csrf_token %}
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label> 作者：</label>
-                            {{ form.author }}
-                            {{ form.author.errors }}
-                        </div>
-                        <div class="col-sm-3">
-                            <label> 评分：</label>
-                            {{ form.score }}
-                            {{ form.score.errors }}
-                        </div>
-                    </div>    <!-- row -->
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <label> 内容：</label>
-                            {{ form.content }}
-                            {{ form.content.errors }}
-                            <button type="submit" class="comment-btn">发表</button>
-                        </div>
+                <div class="col-sm-12" style="margin-top:30px">
+                    <div>
+                        <h3 class="detail-page-title"><span class="label label-warning">添加影评</span></h3>
                     </div>
-                </form>
+                    <div class="col-sm-12" style="margin-left:20px;margin-top:5px">
+                        <form action="{% url 'add_review' movie.id %}" method="post" class="comment-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label> 作者：</label>
+                                    {{ form.author }}
+                                    {{ form.author.errors }}
+                                </div>
+                                <div class="col-sm-3">
+                                    <label> 评分：</label>
+                                    {{ form.score }}
+                                    {{ form.score.errors }}
+                                </div>
+                            </div>    <!-- row -->
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <label> 内容：</label>
+                                    {{ form.content }}
+                                    {{ form.content.errors }}
+                                    <button type="submit" class="comment-btn">发表</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
                 <!--添加影评 END-->
 
             </div>
         </div>
 
         <!--相似电影推荐-->
-        <div style="float:right;width:280px">
-            <div style="height: 100px;"></div>
+        {% if not recommend_list is None %}
+        <div style="float:right;width:200px;margin-top:85px">
             <h3 class="detail-page-title"><span class="label label-primary">相似电影推荐</span></h3>
-            {% for rec in recommend_list %}
-            <div class="col-sm-6 col-xs-1 text-center">
-                <a href="{% url 'movie_detail' rec.id %}" data-gallery-id="gallery-1">
-                    <img src="{{rec.image}}" alt="图片无法显示" class="img-responsive lazyload movie-img"/>
-                    <p class="text-center">
+            <div>
+                {% for rec in recommend_list %}
+                <div class="col-sm-10 col-xs-1" style="margin-top:35px">
+                    <a href="{% url 'movie_detail' rec.id %}" data-gallery-id="gallery-1">
+                        <img src="{{rec.image}}" alt="图片无法显示" class="img-responsive lazyload movie-img"/>
+                        <p class="text-center">
                         <span style="color:#444">
                             {%if rec.title|length >= 8 %}
-                            {{rec.title|slice:'2'}} ...
+                            {{rec.title|slice:'6'}}…
                             {%else%}
                             {{rec.title}}
                             {%endif%}
                         </span>
+                        </p>
+                    </a>
+                    <p class="text-center movie-rating" style="margin-top:4px">
+                        <span class="label label-info">评分：{{rec.rating}}</span>
                     </p>
-                </a>
-                <p class="text-center movie-rating">
-                    <span class="label label-info">评分：{{rec.rating}}</span>
-                </p>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
+        {% endif %}
         <!--相似电影推荐 END-->
     </div>
 </div>

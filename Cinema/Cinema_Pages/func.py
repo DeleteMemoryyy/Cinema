@@ -20,7 +20,7 @@ class GetOtherInfo(object):
         self.url = 'http://api.douban.com/v2/movie/subject/%s?apikey=0df993c66c0c636e29ecbb5344252a4a' % (str(self.id))
         self.response = requests.get(self.url)
         self.datas = self.response.json()
-        self.intro = self.datas['summary'][:-2]
+        self.intro = self.datas['summary'][:-3]
         self.region = '/'.join(self.datas['countries'])
         self.languages = '/'.join(self.datas['languages'])
         self.reviews = self.datas['popular_reviews'][:5]
