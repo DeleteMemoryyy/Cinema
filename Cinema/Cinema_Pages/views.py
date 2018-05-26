@@ -25,8 +25,8 @@ def movie_display(request):
         db = MySQLdb.connect(
             host='localhost',
             port=3306,
-            user='root',
-            passwd='xt032341',
+            user='query',
+            passwd='query',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -87,8 +87,8 @@ def movie_detail(request, id):
         db = MySQLdb.connect(
             host='localhost',
             port=3306,
-            user='root',
-            passwd='xt032341',
+            user='query',
+            passwd='query',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -156,8 +156,8 @@ def movie_detail(request, id):
         conn = MySQLdb.connect(
             host='localhost',
             port=3306,
-            user='root',
-            passwd='xt032341',
+            user='query',
+            passwd='query',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -202,8 +202,8 @@ def add_review(request, movie_id):
             conn = MySQLdb.connect(
                 host='localhost',
                 port=3306,
-                user='root',
-                passwd='xt032341',
+                user='insert',
+                passwd='insert',
                 db='cinema',
                 # use_unicode=True,
                 charset="utf8"
@@ -231,8 +231,8 @@ def movie_search_by_genre(request, genre):
         db = MySQLdb.connect(
             host='localhost',
             port=3306,
-            user='root',
-            passwd='xt032341',
+            user='query',
+            passwd='query',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -270,8 +270,8 @@ def movie_search_by_year(request, year):
         db = MySQLdb.connect(
             host='localhost',
             port=3306,
-            user='root',
-            passwd='xt032341',
+            user='query',
+            passwd='query',
             db='cinema',
             use_unicode=True,
             charset="utf8"
@@ -342,8 +342,8 @@ def movie_search_form(request):
         db = MySQLdb.connect(
             host='localhost',
             port=3306,
-            user='root',
-            passwd='xt032341',
+            user='query',
+            passwd='query',
             db='cinema',
             use_unicode=True,
             charset="utf8"
