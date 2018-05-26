@@ -222,5 +222,7 @@ alter table Play add constraint FK_PLAY_PLAY2_ACTOR foreign key (A_ID)
 
 alter table Review add constraint FK_REVIEW_REVIEW_MOVIE foreign key (M_id)
       references Movie (M_id);
+      
+ALTER TABLE movie ADD INDEX yearindex (M_releasedate);
 
 

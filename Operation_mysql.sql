@@ -84,21 +84,6 @@ delimiter ;
 
 
 Begin;
-
-/*#INSERT INTO Movie VALUES ('1291545', 'Big Fish', 2003, 'No kidding, a lot of heros died', 0);
-
--- insert into Movie values ('0001', 'Avengers3: infinity war', 2018, 'No kidding, a lot of heros died', 0 );
--- insert into Movie values ('0002', 'Avengers1', 2012, 'The begin of a journey', 0 );
-
--- insert into User values ('0001', 'Peter', 'spiderman@marvel.com', 'iamthebest', 'I am the cute spiderman');
--- insert into User values ('0002', 'Stark', 'Ironman@marvel.com', 'iamtherichest', 'I am the cool ironman');
-
-insert into Actor values ('aaaa', NULL, NULL, NULL, '03');
-
--- insert into Review values('Avengers1', '0001','this movie is really good', 4,1 );
--- insert into Review values('Avengers1', '0002','this movie is bulshit', 2,1 );*/
-
--- here I just put in a few of movies. The whole list is in the movie_mysql.txt file
 INSERT INTO movie VALUES (   1291545 , '大鱼' , 'Big Fish' , '2003' , NULL , 8.7 , 'https://movie.douban.com/subject/1291545/' , 'https://img3.doubanio.com/view/movie_poster_cover/spst/public/p692813374.jpg'    
  , 1 );
 INSERT INTO Director VALUES (0, '蒂姆·波顿', NULL, NULL, NULL);
@@ -3304,10 +3289,6 @@ INSERT INTO Belong VALUES (  25917973,'剧情');
 INSERT INTO Belong VALUES (  25917973,'犯罪');
 INSERT INTO Belong VALUES (  25917973,'悬疑');
 COMMIT;
-
-
--- a simple query example.
--- todo: can build a view to simplify this
 
 
 -- create a view to simplify query operation
