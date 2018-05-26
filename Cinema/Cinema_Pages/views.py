@@ -360,7 +360,7 @@ def movie_search_form(request):
         collection.append(Movie(start_id, 'a', title, 'a', 'a', image, 'a', 'NULL', rating, 'a', 'a', 'a', '1'))
         for mv in res:
             if mv[0] != start_id:
-                start_id, title, image = mv[0], mv[2], mv[5];
+                start_id, title, image = mv[0], mv[2], mv[5]
                 rating = mv[7]
                 tmp = Movie(start_id, 'alt', title, 'ori_title', 'year', image, 'genres', 'NULL', rating, 'directors',
                             'casts', 'intro', '1')
