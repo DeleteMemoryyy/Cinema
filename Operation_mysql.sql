@@ -1,88 +1,6 @@
 use cinema;
 SET NAMES utf8;
 
--- create users to protect the data
-CREATE USER 'query'@'localhost' IDENTIFIED BY 'query';
-grant execute ON procedure cinema.queryid TO 'query'@'localhost' identified by 'query';
-grant execute ON procedure cinema.queryyear TO 'query'@'localhost' identified by 'query';
-grant execute ON procedure cinema.queryyear2 TO 'query'@'localhost' identified by 'query';
-grant execute ON procedure cinema.querygerne TO 'query'@'localhost' identified by 'query';
-grant select on cinema.fullmovie to 'query'@'localhost' identified by 'query';
-grant select on cinema.review to 'query'@'localhost' identified by 'query';
-
-
-CREATE USER 'insert'@'localhost' IDENTIFIED BY 'insert';
-grant execute ON procedure cinema.insertreview TO 'insert'@'localhost' identified by 'insert';
-FLUSH PRIVILEGES;
-
-
-
--- trigger for updating stars
-drop trigger if exists compute_star;
-delimiter $
-create trigger compute_star after insert 
-on Review for each row
-begin
-update Movie set M_viewnumber = M_viewnumber + 1
-where Movie.M_id = new.M_id;
-update Movie set M_Star = M_Star + (new.R_score - M_star) / 
-	M_viewnumber
-	where Movie.M_id = new.M_id;
-end$
-delimiter ;
-
-
--- procedure to protext query by id
-drop procedure if exists queryid;
-delimiter $
-create procedure queryid(IN id int)
-begin
-select * from fullmovie where m_id = id;
-end$
-delimiter ;
-
--- procedure to protect insert review
-drop procedure if exists insertreview;
-delimiter $
-create procedure insertreview(IN M_id int, IN R_score float, IN R_author varchar(255) charset utf8, In content longtext charset utf8)
-begin
-insert into Review values (NUll, M_id, R_score, NULL, R_author, content);
-end$
-delimiter ;
-
-
-call insertreview(1291545, 3, '1', 'asdf\'); select * from fullmovie;--\'');
-
--- procedure to protext querybygenre
-drop procedure  if exists querygerne;
-delimiter $
-create procedure querygerne(IN gerne varchar(255) charset utf8)
-begin
-select gerne;
-select * from fullmovie where c_name = gerne;
-end$
-delimiter ;
-
-#call querygerne(' ';select * from fullmovie;# \" ');
-
--- procedure to protext querybyyear
-drop procedure  if exists queryyear;
-delimiter $
-create procedure queryyear(IN y varchar(255) charset utf8)
-begin
-select * from fullmovie where M_releasedate = y;
-end$
-delimiter ;
-
-drop procedure  if exists queryyear2;
-delimiter $
-create procedure queryyear2()
-begin
-select * from fullmovie where M_releasedate < '1990';
-end$
-delimiter ;
-
-
 Begin;
 INSERT INTO movie VALUES (   1291545 , '大鱼' , 'Big Fish' , '2003' , NULL , 8.7 , 'https://movie.douban.com/subject/1291545/' , 'https://img3.doubanio.com/view/movie_poster_cover/spst/public/p692813374.jpg'    
  , 1 );
@@ -3289,13 +3207,4 @@ INSERT INTO Belong VALUES (  25917973,'剧情');
 INSERT INTO Belong VALUES (  25917973,'犯罪');
 INSERT INTO Belong VALUES (  25917973,'悬疑');
 COMMIT;
-
-
--- create a view to simplify query operation
-DROP VIEW IF EXISTS fullmovie;
-CREATE VIEW fullmovie AS
-SELECT Movie.M_id, M_alt, Movie.M_name, M_originalname, M_releaseDate, M_image, C_name, M_star, D_name, A_name, M_intro, M_viewnumber
-FROM Movie, Director, Direct, Actor, play, belong
-WHERE  Movie.M_id = Direct.M_id and Director.D_id = Direct.D_id
-	and Movie.M_id = Play.M_id and Play.A_id = Actor.A_id and Movie.M_id = Belong.M_id;
 
