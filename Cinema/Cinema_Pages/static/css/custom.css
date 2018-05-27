@@ -702,6 +702,17 @@ img {
     transition: 0.4s border-color linear;
 }
 
+.comment-form select {
+    background: transparent;
+    border: 1px solid #aaa;
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 15px 15px;
+    font-size: 16px;
+    line-height: 100%;
+    -webkit-appearance: none;
+}
+
 .contact-form input:focus, .comment-form input:focus,
 .contact-form textarea:focus, .comment-form textarea:focus {
     border-color: #666;

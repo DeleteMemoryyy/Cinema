@@ -10,7 +10,8 @@ class Review():
         if len(raw) == 6:
             self.review_id = raw[0]
             self.movie_id = raw[1]
-            self.score = raw[2]
+            scr = round(float(raw[2]), 1)
+            self.score = str(scr)
             self.time = raw[3]
             self.author = raw[4]
             self.content = raw[5]
@@ -27,7 +28,8 @@ class Movie():
         self.image = _image
         self.genres = _genres
         self.region = _region
-        self.rating = _rating
+        scr = round(float(_rating), 1)
+        self.rating = str(scr)
         self.directors = _directors
         self.casts = _casts
         self.intro = _intro

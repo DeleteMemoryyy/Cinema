@@ -151,6 +151,17 @@
                                 <span class="label label-info">
                                     {{i.author}}
                                 </span>
+                                    <span>
+                                        &nbsp
+                                    </span>
+                                    <span class="label label-success">
+                                    评分：{{i.score}}
+                                    </span>
+                                    <span>
+                                        &nbsp
+                                    </span>
+                                    <span class="label label-warning">
+                                    {{i.time}}
                                     </span>
                                 </header>
 
@@ -168,7 +179,7 @@
                 <!--添加影评-->
                 <div class="col-sm-12" style="margin-top:30px">
                     <div>
-                        <h3 class="detail-page-title"><span class="label label-warning">添加影评</span></h3>
+                        <h3 class="detail-page-title"><span class="label label-primary">添加影评</span></h3>
                     </div>
                     <div class="col-sm-12" style="margin-left:20px;margin-top:5px">
                         <form action="{% url 'add_review' movie.id %}" method="post" class="comment-form">
